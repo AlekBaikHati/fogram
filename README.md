@@ -12,7 +12,8 @@ Bot Telegram ini memungkinkan pengguna yang diotorisasi untuk meneruskan pesan k
 
 ## Perintah yang Tersedia
 
-- **`/start`**: Memulai interaksi dengan bot dan menampilkan pesan sambutan serta pilihan mode.
+- **`/start`**: Menampilkan pesan sambutan sederhana.
+- **`/settings`**: Memulai interaksi dengan bot dan menampilkan pilihan mode.
 - **`/list`**: Menampilkan daftar channel yang telah ditentukan beserta informasi terkait.
 - **`/list2`**: Menampilkan daftar channel tanpa foto profil.
 
@@ -45,7 +46,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi bot:
     ```
 
 4. **Konfigurasi Bot**:
-    - Buka `forward-bot.py` atau `typeP.py` dan lakukan perubahan berikut:
+    - Buka `forward-bot.py` dan lakukan perubahan berikut:
       - **`API_TOKEN`**: Ganti dengan token bot Telegram Anda. Anda bisa mendapatkan token ini dari [BotFather](https://core.telegram.org/bots#6-botfather).
       - **`ADMIN`**: Perbarui dengan username atau ID pengguna yang diizinkan untuk menggunakan bot. Pastikan untuk tidak menyertakan simbol `@`.
       - **`TARGET`**: Perbarui dengan ID atau username channel yang menjadi target penerusan pesan. Gunakan format `-100xxxx` untuk ID channel atau `@username` untuk username channel.
@@ -59,6 +60,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi bot:
 
 2. **Mulai Bot di Telegram**:
     - Kirim `/start` ke bot untuk melihat pesan sambutan.
+    - Gunakan `/settings` untuk mengatur mode dan memulai interaksi lebih lanjut.
     - Kirim pesan apa pun (teks, foto, video, audio) ke bot.
     - Konfirmasikan penerusan saat diminta.
 

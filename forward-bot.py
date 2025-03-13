@@ -7,15 +7,15 @@ import os
 import tempfile
 
 # Konfigurasi bot
-API_TOKEN = '7922XX42XXXXxxxxx'
+API_TOKEN = '79224xxxxxxx'
 
 # Daftar ID atau username channel target
 TARGET = [
-    '-100XXxx'
+    '-100xxxxxxx'
 ]
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = ['wiburich', 'user 2', 'user 3']  # Ganti dengan ID atau username admin yang diizinkan
+ADMIN = ['wiburich', 'Zerozerozoro', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
 
 # Set up logging
 logging.basicConfig(
@@ -44,8 +44,20 @@ mode_remof = False  # Default ke mode penanda
 def is_authorized(user):
     return user.username in ADMIN or str(user.id) in ADMIN
 
-# Fungsi untuk memulai bot
+# Fungsi untuk memulai bot dengan pesan sambutan
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    keyboard = [
+        [InlineKeyboardButton("REPO", url="https://github.com/AlekBaikHati/forward-bot-telegram")],
+        [InlineKeyboardButton("FATHER", url="https://t.me/Zerozerozoro")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(
+        'Selamat datang di F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚! Gunakan /settings untuk mengatur mode.',
+        reply_markup=reply_markup
+    )
+
+# Fungsi untuk mengatur mode bot
+async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not is_authorized(update.effective_user):
         await update.message.reply_text('Anda tidak diizinkan untuk menggunakan bot ini.')
         return
@@ -335,6 +347,7 @@ async def main() -> None:
 
     # Daftarkan handler
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("settings", settings))
     application.add_handler(CommandHandler("list", list_channels))
     application.add_handler(CommandHandler("list2", list_channels_no_photo))
     application.add_handler(MessageHandler(filters.ALL, forward_post))
