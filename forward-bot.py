@@ -7,15 +7,15 @@ import os
 import tempfile
 
 # Konfigurasi bot
-API_TOKEN = '7922427xxxxxx'
+API_TOKEN = '7922XX42XXXXxxxxx'
 
 # Daftar ID atau username channel target
 TARGET = [
-    '-10022xxxxx'
+    '-100XXxx'
 ]
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = ['wiburich', 'xxxxx', 'xxxx']  # Ganti dengan ID atau username admin yang diizinkan
+ADMIN = ['wiburich', 'user 2', 'user 3']  # Ganti dengan ID atau username admin yang diizinkan
 
 # Set up logging
 logging.basicConfig(
@@ -50,23 +50,28 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text('Anda tidak diizinkan untuk menggunakan bot ini.')
         return
 
-    # Kirim pesan baru untuk memilih mode
-    await update.message.reply_text('Silakan pilih mode:\n' + await get_active_mode_text(), reply_markup=await create_mode_keyboard())
+    # Kirim pesan baru untuk memilih mode dengan foto
+    photo_url = "https://ibb.co.com/4gKR86LC"  # URL gambar yang ingin Anda sertakan
+    await update.message.reply_photo(
+        photo=photo_url,
+        caption='F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚\n\n' + await get_active_mode_text(),
+        reply_markup=await create_mode_keyboard()
+    )
 
 # Fungsi untuk mendapatkan teks mode aktif
 async def get_active_mode_text() -> str:
     active_mode = []
     if mode_auto:
-        active_mode.append("AUTO")
+        active_mode.append("✅ AUTO")
     else:
-        active_mode.append("MANUAL")
+        active_mode.append("✅ MANUAL")
 
     if mode_remof:
-        active_mode.append("REMOV")
+        active_mode.append("✅ REMOVE TAG")
     else:
-        active_mode.append("PENANDA")
+        active_mode.append("✅ WITH TAG")
 
-    return "Mode aktif:\n" + "\n".join(active_mode)
+    return "Active Mode:\n" + "\n".join(active_mode)
 
 # Fungsi untuk membuat keyboard mode
 async def create_mode_keyboard() -> InlineKeyboardMarkup:
@@ -80,8 +85,8 @@ async def create_mode_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [InlineKeyboardButton(f"{auto_emoji}AUTO", callback_data='set_auto'),
          InlineKeyboardButton(f"{manual_emoji}MANUAL", callback_data='set_manual')],
-        [InlineKeyboardButton(f"{penanda_emoji}PENANDA", callback_data='set_penanda'),
-         InlineKeyboardButton(f"{remov_emoji}REMOV", callback_data='set_remov')],
+        [InlineKeyboardButton(f"{penanda_emoji}WITH TAG", callback_data='set_penanda'),
+         InlineKeyboardButton(f"{remov_emoji}REMOVE TAG", callback_data='set_remov')],
         [InlineKeyboardButton("TUTUP", callback_data='close')]
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -157,40 +162,40 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     data = query.data
 
-    # Menjawab callback query dengan alert
+    # Menjawab callback query dengan alert jika mode sudah aktif
     if data == 'set_auto':
         if mode_auto:
-            await query.answer(text="Mode AUTO sudah aktif.", show_alert=True)
+            await query.answer(text="Mode AUTO sudah aktif.✨", show_alert=True)
         else:
             mode_auto = True
             mode_remof = False  # Pastikan mode REMOV dinonaktifkan saat beralih ke AUTO
-            await query.answer(text="Mode diubah ke AUTO.", show_alert=True)
-            new_text = 'Silakan pilih mode:\n' + await get_active_mode_text()
-            await query.message.edit_text(new_text, reply_markup=await create_mode_keyboard())
+            await query.answer(text="Mode diubah ke AUTO.✨", show_alert=True)
+            new_text = 'F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚\n\n' + await get_active_mode_text()
+            await query.message.edit_caption(new_text, reply_markup=await create_mode_keyboard())
     elif data == 'set_manual':
         if not mode_auto:
-            await query.answer(text="Mode MANUAL sudah aktif.", show_alert=True)
+            await query.answer(text="Mode MANUAL sudah aktif.✨", show_alert=True)
         else:
             mode_auto = False  # Ubah ke mode manual
-            await query.answer(text="Mode diubah ke MANUAL.", show_alert=True)
-            new_text = 'Silakan pilih mode:\n' + await get_active_mode_text()
-            await query.message.edit_text(new_text, reply_markup=await create_mode_keyboard())
+            await query.answer(text="Mode diubah ke MANUAL.✨", show_alert=True)
+            new_text = 'F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚\n\n' + await get_active_mode_text()
+            await query.message.edit_caption(new_text, reply_markup=await create_mode_keyboard())
     elif data == 'set_penanda':
         if not mode_remof:
-            await query.answer(text="Mode PENANDA sudah aktif.", show_alert=True)
+            await query.answer(text="Mode WITH TAG sudah aktif.✨", show_alert=True)
         else:
             mode_remof = False  # Ubah ke mode penanda
-            await query.answer(text="Mode diubah ke PENANDA.", show_alert=True)
-            new_text = 'Silakan pilih mode:\n' + await get_active_mode_text()
-            await query.message.edit_text(new_text, reply_markup=await create_mode_keyboard())
+            await query.answer(text="Mode diubah ke WITH TAG.✨", show_alert=True)
+            new_text = 'F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚\n\n' + await get_active_mode_text()
+            await query.message.edit_caption(new_text, reply_markup=await create_mode_keyboard())
     elif data == 'set_remov':
         if mode_remof:
-            await query.answer(text="Mode REMOV sudah aktif.", show_alert=True)
+            await query.answer(text="Mode REMOVE TAG sudah aktif.✨", show_alert=True)
         else:
             mode_remof = True  # Ubah ke mode REMOV
-            await query.answer(text="Mode diubah ke REMOV.", show_alert=True)
-            new_text = 'Silakan pilih mode:\n' + await get_active_mode_text()
-            await query.message.edit_text(new_text, reply_markup=await create_mode_keyboard())
+            await query.answer(text="Mode diubah ke REMOVE TAG.✨", show_alert=True)
+            new_text = 'F̶̢̉͝O̷̧̡̙̹̥̱̹͈̯͗̌R̸̡̰̯̥͙̘̩̀̅̊̇̈́̕W̶͕̬̻͎̜͑́͋A̴̦̘͎̾̊̉̋̄͊̏Ṙ̸̢̫̥̦̦̌̊̂D̸͉̾̆̄̕ ̷͕̗͇̿̽̂̍͠͝B̴͍̪̮͕͒̐́̄͂͜͠͝͝͠͝Ở̶̳̿̑̕T̵̳̭͉̄̓̾̓̄̀̀̄ͅ ̴̡͓̥̬͂̊͆͌̉̈́̓͠͝T̴̟̦̟͕͆͂͒́̊͝É̸̢̺͉͎̩̮̪̂̑͐͐̊̌͊͆̅L̴̨̯͍̞̞̩̞̯̀̈̋͋́͐̚̕Ȩ̸̢̺̲͉̰͚̭͔͒̀͝G̶̢̧̢̻̜̮̳̝̞̱̈́̑̅̑̍̍̽̓R̶̫͍͇̯̔̆̕Ą̷̰̭͚͔̖͉͙̇͒̏̐̋͗̀͠M̷̧͔͚̠͉͔͈̝̗͇̈̃̓̎̚\n\n' + await get_active_mode_text()
+            await query.message.edit_caption(new_text, reply_markup=await create_mode_keyboard())
     elif data == 'close':
         await query.message.delete()
         return

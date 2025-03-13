@@ -45,9 +45,10 @@ Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi bot:
     ```
 
 4. **Konfigurasi Bot**:
-    - Buka `forward-bot.py` dan ganti `API_TOKEN` dengan token bot Telegram Anda.
-    - Perbarui daftar `ADMIN` dengan username atau ID pengguna yang diizinkan untuk menggunakan bot.
-    - Perbarui daftar `TARGET` dengan ID atau username channel yang menjadi target penerusan pesan.
+    - Buka `forward-bot.py` atau `typeP.py` dan lakukan perubahan berikut:
+      - **`API_TOKEN`**: Ganti dengan token bot Telegram Anda. Anda bisa mendapatkan token ini dari [BotFather](https://core.telegram.org/bots#6-botfather).
+      - **`ADMIN`**: Perbarui dengan username atau ID pengguna yang diizinkan untuk menggunakan bot. Pastikan untuk tidak menyertakan simbol `@`.
+      - **`TARGET`**: Perbarui dengan ID atau username channel yang menjadi target penerusan pesan. Gunakan format `-100xxxx` untuk ID channel atau `@username` untuk username channel.
 
 ## Cara Menjalankan Bot
 
@@ -65,7 +66,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi bot:
 
 ### Struktur Kode
 
-- **`forward-bot.py`**: File utama yang berisi logika bot, termasuk pengaturan otorisasi, penerusan pesan, dan pengelolaan mode operasi.
+- **`forward-bot.py`** atau **`typeP.py`**: File utama yang berisi logika bot, termasuk pengaturan otorisasi, penerusan pesan, dan pengelolaan mode operasi.
 - **`requirements.txt`**: Daftar dependensi yang diperlukan untuk menjalankan bot.
 - **`.gitignore`**: File yang menentukan file dan folder yang tidak akan diupload ke GitHub.
 
