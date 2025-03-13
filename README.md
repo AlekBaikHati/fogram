@@ -64,15 +64,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi bot:
     - Kirim pesan apa pun (teks, foto, video, audio) ke bot.
     - Konfirmasikan penerusan saat diminta.
 
-## Penjelasan Kode
-
-### Struktur Kode
-
-- **`forward-bot.py`** atau **`typeP.py`**: File utama yang berisi logika bot, termasuk pengaturan otorisasi, penerusan pesan, dan pengelolaan mode operasi.
-- **`requirements.txt`**: Daftar dependensi yang diperlukan untuk menjalankan bot.
-- **`.gitignore`**: File yang menentukan file dan folder yang tidak akan diupload ke GitHub.
-
-### Fungsi Utama
+## Fungsi Utama
 
 - **Otorisasi**: Memeriksa apakah pengguna yang mengirim pesan diizinkan untuk menggunakan bot.
 - **Penerusan Pesan**: Mengelola penerusan pesan baik dalam mode otomatis maupun manual.
@@ -85,10 +77,6 @@ Jika Anda mengalami masalah saat menjalankan bot, periksa hal-hal berikut:
 - Pastikan token bot Anda benar dan aktif.
 - Periksa apakah Anda telah menambahkan pengguna yang diizinkan ke dalam daftar `ADMIN`.
 - Pastikan channel target yang Anda masukkan valid dan bot memiliki izin untuk mengirim pesan ke channel tersebut.
-
-## Lisensi
-
-Bot ini dirilis di bawah lisensi MIT. Silakan lihat file LICENSE untuk informasi lebih lanjut.
 
 ## Kontak
 
