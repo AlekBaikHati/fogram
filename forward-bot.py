@@ -13,7 +13,8 @@ API_TOKEN = '79224xxxxxxx'
 TARGET = os.getenv('TARGET', '').split(',')
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = ['wiburich', 'Zerozerozoro', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
+ADMIN = os.getenv('ADMIN', '').split(',')
+#ADMIN = ['wiburich', 'Zerozerozoro', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
 
 # Set up logging
 logging.basicConfig(
