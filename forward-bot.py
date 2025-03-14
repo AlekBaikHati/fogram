@@ -5,6 +5,7 @@ import asyncio
 import nest_asyncio
 import os
 import tempfile
+from aiohttp import web
 
 # Konfigurasi bot
 API_TOKEN = os.getenv('API_TOKEN')
@@ -339,7 +340,16 @@ async def list_channels_no_photo(update: Update, context: ContextTypes.DEFAULT_T
 
     await status_message.delete()  # Hapus pesan loading setelah selesai
     await update.message.reply_text(f'Daftar channel tanpa foto berhasil dimuat. Total channel: {total_channels}.', quote=True)  # Tambahkan pesan sukses
+    async def handle(request):
+    return web.Response(text="Bot is running")
 
+async def start_web_server():
+    app = web.Application()
+    app.router.add_get('/', handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', 8000)
+  
 async def main() -> None:
     # Inisialisasi Application
     application = Application.builder().token(API_TOKEN).build()
@@ -354,7 +364,7 @@ async def main() -> None:
 
     # Log saat bot dijalankan
     logger.info("Bot dimulai dan siap menerima pesan.")
-
+    
     # Jalankan bot
     await application.run_polling()
 
