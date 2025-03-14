@@ -7,7 +7,7 @@ import os
 import tempfile
 
 # Konfigurasi bot
-API_TOKEN = '79224xxxxxxx'
+API_TOKEN = os.getenv('API_TOKEN')
 
 # Baca TARGET dari variabel lingkungan
 TARGET = os.getenv('TARGET', '').split(',')
