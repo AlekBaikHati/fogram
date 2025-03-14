@@ -9,10 +9,8 @@ import tempfile
 # Konfigurasi bot
 API_TOKEN = '79224xxxxxxx'
 
-# Daftar ID atau username channel target
-TARGET = [
-    '-100xxxxxxx'
-]
+# Baca TARGET dari variabel lingkungan
+TARGET = os.getenv('TARGET', '').split(',')
 
 # Daftar ID atau username admin yang diizinkan
 ADMIN = ['wiburich', 'Zerozerozoro', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
