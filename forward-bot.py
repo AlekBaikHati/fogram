@@ -1,21 +1,29 @@
+import nest_asyncio  # Tambahkan ini
+nest_asyncio.apply()  # Terapkan nest_asyncio
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 import logging
 import asyncio
-import nest_asyncio
 import os
 import tempfile
-from aiohttp import web
 
 # Konfigurasi bot
-API_TOKEN = os.getenv('API_TOKEN')
+API_TOKEN = ''
 
-# Baca TARGET dari variabel lingkungan
-TARGET = os.getenv('TARGET', '').split(',')
+# Daftar ID atau username channel target dalam format horizontal
+TARGET = []  # Kosongkan variabel ini
+
+# Contoh pengisian variabel TARGET
+# TARGET = ['-1002244853686']  # Contoh untuk satu ID
+# TARGET = ['-1002373313541', '-1002254821058']  # Contoh untuk banyak ID
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = os.getenv('ADMIN', '').split(',')
-#ADMIN = ['wiburich', 'Zerozerozoro', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
+ADMIN = []  # Kosongkan variabel ini
+
+# Contoh pengisian variabel ADMIN
+# ADMIN = ['wiburich']  # Contoh untuk satu admin
+# ADMIN = ['wiburich', 'Ghsd77', 'username3']  # Contoh untuk banyak admin
 
 # Set up logging
 logging.basicConfig(
@@ -37,8 +45,11 @@ httpx_logger = logging.getLogger("httpx")
 httpx_logger.setLevel(logging.WARNING)
 
 # Variabel status untuk mode operasi dan mode penerusan
-mode_auto = True  # Default ke mode auto
-mode_remof = False  # Default ke mode penanda
+mode_auto = False  # Default ke mode auto
+mode_remof = False # Default ke mode penanda
+
+# Tambahkan variabel untuk menyimpan konten terakhir
+last_status_message_content = ""
 
 # Fungsi untuk memeriksa otorisasi
 def is_authorized(user):
@@ -130,6 +141,10 @@ async def forward_post_auto(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     success_channels = []
     total_channels = len(TARGET)
 
+    # Tampilkan loading sederhana untuk 0%
+    await status_message.edit_text(f"{action.capitalize()} pesan: 0%")
+    last_status_message_content = f"{action.capitalize()} pesan: 0%"
+
     for index, target in enumerate(TARGET):
         try:
             if mode_remof:
@@ -141,9 +156,19 @@ async def forward_post_auto(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             logger.error(f'Gagal meneruskan pesan ke {target}: {e}')
             error_channels.append(target)
 
-        # Update progress
+        # Update progress setiap 10%
         progress = int((index + 1) / total_channels * 100)
-        await status_message.edit_text(f"{action.capitalize()} pesan: {progress}% selesai")
+        progress_bar = '█' * (progress // 10) + '▒' * (10 - (progress // 10))  # Membuat bar progres
+        new_content = f"{action.capitalize()} pesan: {progress_bar} {progress}%"
+        if new_content != last_status_message_content:  # Periksa apakah konten baru berbeda
+            await status_message.edit_text(new_content)
+            last_status_message_content = new_content  # Update konten terakhir
+
+    # Pastikan persentase ditampilkan sebagai 100% jika sudah selesai
+    final_content = f"{action.capitalize()} pesan: 100%"
+    if final_content != last_status_message_content:  # Periksa apakah konten baru berbeda
+        await status_message.edit_text(final_content)
+        last_status_message_content = final_content  # Update konten terakhir
 
     # Summary of forwarding
     summary_message = f"{action.capitalize()} pesan selesai.\n"
@@ -230,6 +255,10 @@ async def confirm_forward(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     success_channels = []
     total_channels = len(TARGET)
 
+    # Tampilkan loading sederhana untuk 0%
+    await status_message.edit_text(f"{action.capitalize()} pesan: 0%")
+    last_status_message_content = f"{action.capitalize()} pesan: 0%"
+
     for index, target in enumerate(TARGET):
         try:
             if mode_remof:
@@ -241,9 +270,19 @@ async def confirm_forward(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             logger.error(f'Gagal meneruskan pesan ke {target}: {e}')
             error_channels.append(target)
 
-        # Update progress
+        # Update progress setiap 10%
         progress = int((index + 1) / total_channels * 100)
-        await status_message.edit_text(f"{action.capitalize()} pesan: {progress}% selesai")
+        progress_bar = '█' * (progress // 10) + '▒' * (10 - (progress // 10))  # Membuat bar progres
+        new_content = f"{action.capitalize()} pesan: {progress_bar} {progress}%"
+        if new_content != last_status_message_content:  # Periksa apakah konten baru berbeda
+            await status_message.edit_text(new_content)
+            last_status_message_content = new_content  # Update konten terakhir
+
+    # Pastikan persentase ditampilkan sebagai 100% jika sudah selesai
+    final_content = f"{action.capitalize()} pesan: 100%"
+    if final_content != last_status_message_content:  # Periksa apakah konten baru berbeda
+        await status_message.edit_text(final_content)
+        last_status_message_content = final_content  # Update konten terakhir
 
     # Summary of forwarding
     summary_message = f"{action.capitalize()} pesan selesai.\n"
@@ -274,6 +313,9 @@ async def list_channels(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     # Pastikan folder 'Profil' ada
     os.makedirs('Profil', exist_ok=True)
 
+    # Tampilkan loading sederhana untuk 0%
+    await status_message.edit_text(f"Memuat daftar: 0%")
+
     for index, channel_id in enumerate(TARGET):
         try:
             chat = await bot.get_chat(chat_id=channel_id)
@@ -300,9 +342,10 @@ async def list_channels(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         except Exception as e:
             await update.message.reply_text(f"Gagal mengakses channel {channel_id}: {e}")
 
-        # Update progress
+        # Update progress setiap 10%
         progress = int((index + 1) / total_channels * 100)
-        await status_message.edit_text(f"Memuat daftar: {progress}% selesai")
+        progress_bar = '█' * (progress // 10) + '▒' * (10 - (progress // 10))  # Membuat bar progres
+        await status_message.edit_text(f"Memuat daftar: {progress_bar} {progress}%")
 
     await status_message.delete()  # Hapus pesan loading setelah selesai
     await update.message.reply_text(f'Daftar channel berhasil dimuat. Total channel: {total_channels}.', quote=True)  # Tambahkan pesan sukses dengan format quote
@@ -317,12 +360,15 @@ async def list_channels_no_photo(update: Update, context: ContextTypes.DEFAULT_T
     status_message = await update.message.reply_text('Memuat daftar channel tanpa foto...')
     total_channels = len(TARGET)
 
+    # Tampilkan loading sederhana untuk 0%
+    await status_message.edit_text(f"Memuat daftar tanpa foto: 0%")
+
     for index, channel_id in enumerate(TARGET):
         try:
             chat = await bot.get_chat(chat_id=channel_id)
             link = f"https://t.me/{chat.username}" if chat.username else "Link tidak tersedia"
             info = (
-                "✦•┈๑⋅⋯ ⋯⋅๑┈•✦\n"
+                "⋆˖⁺‧₊☽◯☾₊‧⁺˖⋆\n"
                 f"Channel ID: {chat.id}\n"
                 f"Nama Channel: {chat.title}\n"
                 f"Username Channel: {chat.username}\n"
@@ -334,22 +380,32 @@ async def list_channels_no_photo(update: Update, context: ContextTypes.DEFAULT_T
         except Exception as e:
             await update.message.reply_text(f"Gagal mengakses channel {channel_id}: {e}")
 
-        # Update progress
+        # Update progress setiap 10%
         progress = int((index + 1) / total_channels * 100)
-        await status_message.edit_text(f"Memuat daftar tanpa foto: {progress}% selesai")
+        progress_bar = '█' * (progress // 10) + '▒' * (10 - (progress // 10))  # Membuat bar progres
+        await status_message.edit_text(f"Memuat daftar tanpa foto: {progress_bar} {progress}%")
 
     await status_message.delete()  # Hapus pesan loading setelah selesai
     await update.message.reply_text(f'Daftar channel tanpa foto berhasil dimuat. Total channel: {total_channels}.', quote=True)  # Tambahkan pesan sukses
-    async def handle(request):
-    return web.Response(text="Bot is running")
 
-async def start_web_server():
-    app = web.Application()
-    app.router.add_get('/', handle)
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', 8000)
-  
+# Tentukan nama sesi dari variabel lingkungan atau gunakan default
+SESSION_NAME = os.getenv('SESSION_NAME', 'forward_session')
+
+# Gunakan nama sesi ini untuk mengatur direktori kerja atau file yang berbeda
+session_directory = os.path.join(tempfile.gettempdir(), SESSION_NAME)
+os.makedirs(session_directory, exist_ok=True)
+logger.info(f"Session directory created at: {session_directory}")
+
+# Contoh penggunaan: menyimpan log atau data di direktori sesi
+log_file_path = os.path.join(session_directory, 'bot.log')
+logger.info(f"Log file path: {log_file_path}")
+
+# Set up logging dengan file log yang berbeda
+file_handler = logging.FileHandler(log_file_path)
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 async def main() -> None:
     # Inisialisasi Application
     application = Application.builder().token(API_TOKEN).build()
@@ -364,7 +420,7 @@ async def main() -> None:
 
     # Log saat bot dijalankan
     logger.info("Bot dimulai dan siap menerima pesan.")
-    
+
     # Jalankan bot
     await application.run_polling()
 
@@ -372,8 +428,10 @@ async def main() -> None:
     logger.info("Bot dihentikan.")
 
 if __name__ == '__main__':
-    nest_asyncio.apply()
     try:
-        asyncio.run(main())
+        # Dapatkan event loop yang ada
+        loop = asyncio.get_event_loop()
+        # Jalankan coroutine main() di dalam event loop yang ada
+        loop.run_until_complete(main())
     except (KeyboardInterrupt, SystemExit):
         logger.info("Bot dihentikan oleh pengguna.")
