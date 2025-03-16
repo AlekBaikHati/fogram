@@ -9,12 +9,14 @@ import os
 import tempfile
 
 # Konfigurasi bot
-API_TOKEN = ''
+API_TOKEN = '7922427895:AAEuc9_cXFFBWAWTgsecDU6JBQLcQtD5-Uo'
+
 # Daftar ID atau username channel target dalam format horizontal
-TARGET = ''.split()  # Mengonversi string menjadi list
+#TARGET = ['-1002244853686']
+TARGET = ['-1002373313541', '-1002254821058', '-1001686407166', '-1002426413126', '-1002485895417', '-1002498780273', '-1002281738268', '-1002331167044', '-1001581818082', '-1002326740190', '-1002282105984', '-1002339777085', '-1001520368488', '-1002436405250', '-1002196634482', '-1002459756873', '-1002416529565', '-1002378854228', '-1002323933674', '-1002350838483', '-1001778278380', '-1002399724051', '-1002405247093', '-1002363288334', '-1001757415066', '-1002436175831', '-1001736118027', '-1001592131992', '-1001527045281']
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = 'wiburich Ghsd77'.split()  # Mengonversi string menjadi list
+ADMIN = ['wiburich', 'Ghsd77', 'username3']  # Ganti dengan ID atau username admin yang diizinkan
 
 # Set up logging
 logging.basicConfig(
