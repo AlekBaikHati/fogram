@@ -9,7 +9,7 @@ import os
 import tempfile
 
 # Konfigurasi bot
-API_TOKEN = '7922427895:AAEuc9_cXFFBWAWTgsecDU6JBQLcQtD5-Uo'
+API_TOKEN = ''
 
 # Daftar ID atau username channel target dalam format horizontal
 #TARGET = ['-1002244853686']
