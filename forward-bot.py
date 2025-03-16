@@ -10,20 +10,11 @@ import tempfile
 
 # Konfigurasi bot
 API_TOKEN = ''
-
 # Daftar ID atau username channel target dalam format horizontal
-TARGET = []  # Kosongkan variabel ini
-
-# Contoh pengisian variabel TARGET
-# TARGET = ['-1002244853686']  # Contoh untuk satu ID
-# TARGET = ['-1002373313541', '-1002254821058']  # Contoh untuk banyak ID
+TARGET = ''.split()  # Mengonversi string menjadi list
 
 # Daftar ID atau username admin yang diizinkan
-ADMIN = []  # Kosongkan variabel ini
-
-# Contoh pengisian variabel ADMIN
-# ADMIN = ['wiburich']  # Contoh untuk satu admin
-# ADMIN = ['wiburich', 'Ghsd77', 'username3']  # Contoh untuk banyak admin
+ADMIN = 'wiburich Ghsd77'.split()  # Mengonversi string menjadi list
 
 # Set up logging
 logging.basicConfig(
